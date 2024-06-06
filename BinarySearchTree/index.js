@@ -27,12 +27,12 @@ function insertAtTree(root, val) {
   return root;
 }
 function minValueNode(root) {
-  let curr = root;
-  while (curr && curr.left) {
-    curr = curr.left;
+    let curr = root;
+    while (curr && curr.left) {
+      curr = curr.left;
+    }
+    return curr;
   }
-  return curr;
-}
 function remove(root,val){
     if (root==null)
     return null;
