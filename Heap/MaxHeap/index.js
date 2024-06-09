@@ -20,13 +20,14 @@ class MaxHeap {
         return 2*i+2
     }
     maxHeapify(i){
-      const left = this.leftChild(i)
+      const left = this.leftChi
+      ld(i)
       const right = this.rightChild(i)
       let largest = i
       if(this.heap[left]>this.heap[largest] && left<this.heap.length){
             largest = left;
         }
-      if(this.heap[right]>this.heap[largest] && left<this.heap.length){
+      if(this.heap[right]>this.heap[largest] && right<this.heap.length){
             largest = right;
         }
       if(largest!==i){
