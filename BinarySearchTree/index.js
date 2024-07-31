@@ -1,30 +1,36 @@
-class TreeNode {
-  constructor(val) {
-    this.val = val;
-    this.left = null;
-    this.right = null;
+class TreeNode{
+  constructor(value){
+      this.value = value;
+      this.left = null;
+      this.right = null;
   }
 }
-function search(root, target) {
-  if (root == null) {
-    return false;
+function  insertAtTree(root,value){
+  if(root==null){
+      return new TreeNode(value)
   }
-  if (root.val == target) {
-    return true;
-  } else if (root.val < target) {
-    return search(root.right, target);
-  } else if (root.val > target) {
-    return search(root.left, target);
+  if(value>root.value){
+      root.right = Insert(root.right,value)
   }
+  else if(value<root.value){
+      root.left = Insert(root.left,value)
+  }
+  return root;
 }
 
-function insertAtTree(root, val) {
-  if (root == null) {
-    return new TreeNode(val);
+function search(root,target){
+  if(root == null){
+      return false;
   }
-  if (root.val < val) root.right = insertAtTree(root.right, val);
-  else if (root.val > val) root.left = insertAtTree(root.left, val);
-  return root;
+  if(target == root.value){
+      return true;
+  }
+  else if(target>root.value){
+      return search(root.right,target)
+  }
+  else if(target<root.value){
+      return search(root.left,target)
+  }
 }
 function minValueNode(root) {
     let curr = root;
