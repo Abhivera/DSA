@@ -55,8 +55,8 @@ function remove(root, value) {
 
 //Depth First Traversal
 
-function preOrderTraversal(root) {
-  let result = [];
+function preOrderTraversal(root,result=[]) {
+  
   if (root !== null) {
     result.push(root.value);
     preOrderTraversal(root.left);
@@ -65,8 +65,8 @@ function preOrderTraversal(root) {
 
   return result;
 }
-function inOrderTraversal(root) {
-  let result = [];
+function inOrderTraversal(root,result=[]) {
+  
   if (root !== null) {
     inOrderTraversal(root.left);
     result.push(root.value);
@@ -74,8 +74,8 @@ function inOrderTraversal(root) {
   }
   return result;
 }
-function postOrderTraversal(root) {
-  let result = [];
+function postOrderTraversal(root,result=[]) {
+  
   if (root !== null) {
     postOrderTraversal(root.left);
     postOrderTraversal(root.right);
@@ -108,4 +108,16 @@ function levelOrderTraversal(root){
       result.push(currentLevel)
   }
   return result
+}
+function treeHeight(root){
+  if(root==null){
+      return 0
+  }
+  return 1+Math.max(treeHeight(root.left),treeHeight(root.right))
+}
+function countNodes(root){
+  if(root==null){
+      return 0
+  }
+  return 1+countNodes(root.left)+countNodes(root.right)
 }
