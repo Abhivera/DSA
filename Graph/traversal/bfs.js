@@ -46,10 +46,8 @@ const currentVertex = queue.shift();
 if(!visited.has(currentVertex)){
     visited.add(currentVertex)
     result.push(currentVertex)
-    this.adjacencyList.get(currentVertex).forEach((neighbor)=>{
-        if(!visited.has(neighbor)){
-            queue.push(neighbor);
-        }
+    this.adjacencyList.get(currentVertex).forEach((neighbor)=>{ queue.push(neighbor);
+    
     })
 
 }
