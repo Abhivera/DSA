@@ -126,10 +126,10 @@ if(root==null){
     return null
 }
 let queue = [root];
-let visited = [];
+let result = [];
 while(queue.length>0){
     let currentNode=queue.shift();
-     visited.push(currentNode.value)
+     result.push(currentNode.value)
      if(currentNode.left!==null){
          queue.push(currentNode.left);
      }
@@ -139,7 +139,7 @@ while(queue.length>0){
     
 }
 
-return visited
+return result
 }
 function treeHeight(root) {
   if (root === null) {
