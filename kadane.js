@@ -1,3 +1,4 @@
+//maximum sum of a contiguous subarray.
 function kadane(arr) {
   let maxSoFar = arr[0];
   let maxEndingHere = arr[0];
