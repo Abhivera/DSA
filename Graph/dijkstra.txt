@@ -1,0 +1,197 @@
+Class: Graph
+1. Constructor
+
+constructor() {
+    this.adjacencyList = {};
+}
+Purpose: Initializes a new instance of the Graph class.
+Functionality: Creates an empty object called adjacencyList which will hold the graph's nodes and their edges.
+2. Add Node Method
+
+addNode(node) {
+    if (!this.adjacencyList[node]) {
+        this.adjacencyList[node] = [];
+    }
+}
+Purpose: Adds a new node to the graph.
+Functionality: If the node doesn't already exist in adjacencyList, it initializes it with an empty array (which will hold the edges).
+Example:
+Calling graph.addNode('A') will create an entry in adjacencyList: {'A': []}.
+3. Add Edge Method
+
+addEdge(node1, node2, weight) {
+    if (!this.adjacencyList[node1] || !this.adjacencyList[node2]) {
+        console.error("either one or both do not exist");
+    }
+    this.adjacencyList[node1].push({node: node2, weight});
+    this.adjacencyList[node2].push({node: node1, weight});
+}
+Purpose: Connects two nodes in the graph with a weighted edge.
+Functionality:
+First, it checks if both nodes exist. If not, it logs an error.
+It adds an entry for each node, indicating that they are connected and the weight of the edge.
+Example:
+After adding edges graph.addEdge('A', 'B', 5) and graph.addEdge('A', 'C', 10), the adjacency list will be:
+
+{
+  'A': [{ node: 'B', weight: 5 }, { node: 'C', weight: 10 }],
+  'B': [{ node: 'A', weight: 5 }],
+  'C': [{ node: 'A', weight: 10 }]
+}
+Dijkstra's Algorithm Method
+
+dijkstra(start) {
+    const distances = {};
+    const previous = {};
+    const pq = new MinPriorityQueue();
+    
+    for (let node in this.adjacencyList) {
+        distances[node] = Infinity;
+        previous[node] = null;
+    }
+    distances[start] = 0;
+    pq.enqueue(start, 0);
+Purpose: Finds the shortest paths from the start node to all other nodes.
+Functionality:
+Initializes two objects: distances to keep track of the minimum distance to each node (initialized to Infinity) and previous to keep track of the previous node in the optimal path.
+Initializes a priority queue (pq) to hold nodes based on their distances.
+Sets the distance to the starting node to 0 and adds it to the priority queue.
+Example: If we call graph.dijkstra('A') and 'A' is the starting point, distances will be:
+
+{ 'A': 0, 'B': Infinity, 'C': Infinity }
+Processing the Nodes
+
+    while (!pq.isEmpty()) {
+        const { element: currentNode } = pq.dequeue();
+        for (let neighbor of this.adjacencyList[currentNode]) {
+            const { node: neighborNode, weight } = neighbor;
+            const newDist = distances[currentNode] + weight;
+Purpose: Continuously processes the node with the shortest distance until all nodes are processed.
+Functionality:
+Dequeues the node with the lowest distance.
+Iterates over its neighbors to calculate potential new distances.
+Example: If currentNode is 'A', it checks neighbors 'B' and 'C'.
+Updating Distances
+
+            if (newDist < distances[neighborNode]) {
+                distances[neighborNode] = newDist;
+                previous[neighborNode] = currentNode;
+                pq.enqueue(neighborNode, newDist);
+            }
+        }
+    }
+Purpose: Updates the distances and previous nodes if a shorter path is found.
+Functionality:
+If the calculated distance (newDist) to a neighbor is less than the known distance, it updates the distance and the previous node for that neighbor and enqueues the neighbor with the new distance.
+Example:
+If newDist to 'B' (from 'A') is 5, it updates distances['B'] to 5 and adds 'B' to the priority queue.
+Returning Results
+
+    return { distances, previous };
+}
+Purpose: Returns the final distances and paths.
+Functionality: Returns an object containing the shortest distances from the starting node to all other nodes and the previous nodes for path reconstruction.
+Example: The return value might look like:
+
+{
+  distances: { 'A': 0, 'B': 5, 'C': 10 },
+  previous: { 'A': null, 'B': 'A', 'C': 'A' }
+}
+Class: MinPriorityQueue
+This class helps manage the priority queue used in Dijkstra's algorithm.
+
+Constructor
+
+constructor() {
+    this.values = [];
+}
+Purpose: Initializes an empty array for the priority queue.
+Enqueue Method
+
+enqueue(element, priority) {
+    this.values.push({ element, priority });
+    this.sort();
+}
+Purpose: Adds an element to the queue with its priority.
+Functionality: Pushes the new element onto the values array and sorts the array by priority.
+Dequeue Method
+
+dequeue() {
+    return this.values.shift();
+}
+Purpose: Removes and returns the element with the highest priority (lowest value).
+Is Empty Method
+
+isEmpty() {
+    return this.values.length == 0;
+}
+Purpose: Checks if the queue is empty.
+Sort Method
+
+sort() {
+    this.values.sort((a, b) => a.priority - b.priority);
+}
+Purpose: Sorts the queue by priority in ascending order.
+Dry Run Example
+Let’s run through a dry run of the graph operations and Dijkstra's algorithm:
+
+Create the graph:
+
+
+const graph = new Graph();
+graph.addNode('A');
+graph.addNode('B');
+graph.addNode('C');
+graph.addEdge('A', 'B', 5);
+graph.addEdge('A', 'C', 10);
+graph.addEdge('B', 'C', 2);
+The adjacency list now looks like:
+
+
+{
+  'A': [{ node: 'B', weight: 5 }, { node: 'C', weight: 10 }],
+  'B': [{ node: 'A', weight: 5 }, { node: 'C', weight: 2 }],
+  'C': [{ node: 'A', weight: 10 }, { node: 'B', weight: 2 }]
+}
+Run Dijkstra's algorithm starting from node 'A':
+
+
+const result = graph.dijkstra('A');
+Initialize distances:
+
+
+distances = { 'A': 0, 'B': Infinity, 'C': Infinity }
+previous = { 'A': null, 'B': null, 'C': null }
+Enqueue 'A' with distance 0.
+
+Dequeue 'A':
+
+Check neighbor 'B':
+New distance to 'B': 0 + 5 = 5 (update)
+Check neighbor 'C':
+New distance to 'C': 0 + 10 = 10 (update)
+Distances after processing 'A':
+
+
+distances = { 'A': 0, 'B': 5, 'C': 10 }
+previous = { 'A': null, 'B': 'A', 'C': 'A' }
+Dequeue 'B' (next node with lowest distance):
+
+Check neighbor 'A' (already processed).
+Check neighbor 'C':
+New distance to 'C': 5 + 2 = 7 (update)
+Distances after processing 'B':
+
+
+distances = { 'A': 0, 'B': 5, 'C': 7 }
+previous = { 'A': null, 'B': 'A', 'C': 'B' }
+Dequeue 'C' (already has no neighbors to update).
+
+Final Result:
+
+
+{
+  distances: { 'A': 0, 'B': 5, 'C': 7 },
+  previous: { 'A': null, 'B': 'A', 'C': 'B' }
+}
+In conclusion, the code successfully implements a graph with Dijkstra's algorithm for finding the shortest paths, with a priority queue managing the nodes efficiently. The dry run illustrates how distances are updated through the graph's structure, showing how the algorithm arrives at the final shortest paths.
