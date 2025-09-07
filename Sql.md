@@ -454,4 +454,3 @@ JOIN departments d ON e.department_id = d.id;
 7. Find the longest gap between consecutive hire dates
 8. Identify employees whose salary is above the 75th percentile
 
-Remember: Practice with real databases and always test your queries on sample data first!
